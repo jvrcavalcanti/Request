@@ -1,4 +1,9 @@
 {
+    "name": "accolon/request",
+    "description": "Library for request with cUrl",
+    "require": {
+        "php": "^7.4"
+    },
     "require-dev": {
         "phpunit/phpunit": "^9.2"
     },
