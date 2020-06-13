@@ -44,7 +44,7 @@ class Request
             $options[CURLOPT_POST] = true;
         }
 
-        if ($this->method !== Methods::GET && $this->method !== Methods::POST) {
+        if ($this->method !== Methods::GET) {
             $options[CURLOPT_CUSTOMREQUEST] = $this->method;
             $options[CURLOPT_POSTFIELDS] = $payload;    
             $options[CURLOPT_HTTPHEADER] = [
