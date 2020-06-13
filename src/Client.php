@@ -23,7 +23,32 @@ class Client
         $this->contentType = $type;
     }
 
-    public function get(string $url, $payload = null, array $headers = []): Response
+    private function request(string $url, string $method, $payload, array $headers): Response
+    {
+        $request = new Request(
+            $this->baseUrl . $url,
+            $method,
+            $headers
+        );
+
+        if (!$payload) {
+            return new Response(
+                $request->run(),
+                $request->getStatus()
+            );    
+        }
+
+        if ($this->contentType === ContentType::JSON) {
+            $payload = json_encode($payload);
+        }
+
+        return new Response(
+            $request->run($payload),
+            $request->getStatus()
+        );
+    }
+
+    public function get(string $url, $payload = null, array $headers = [])
     {
         if (is_array($payload) || is_object($payload)) {
             $payload = http_build_query($payload);
@@ -33,39 +58,76 @@ class Client
             $payload = "";
         }
 
-        $request = new Request(
-            $this->baseUrl . $url . $payload,
-            Methods::GET, [
-            ...$headers,
-            "Content-Type: {$this->contentType}"
-        ]);
-
-        $result = $request->run();
-
-        $response = new Response($result, $request->getStatus());
-
-        return $response;
+        return $this->request(
+            $url . $payload,
+            Methods::GET,
+            $payload,
+            $headers
+        );
     }
 
-    public function post(string $url, $payload = "", array $headers = []): Response
+    public function post(string $url, $payload = null, array $headers = [])
     {
-        $request = new Request(
-            $this->baseUrl . $url,
+        return $this->request(
+            $url,
             Methods::POST,
+            $payload,
             [
                 ...$headers,
                 "Content-Type: {$this->contentType}"
             ]
         );
+    }
 
-        if (ContentType::JSON) {
-            $payload = json_encode($payload);
-        }
+    public function put(string $url, $payload = null, array $headers = [])
+    {
+        return $this->request(
+            $url,
+            Methods::PUT,
+            $payload,
+            [
+                ...$headers,
+                "Content-Type: {$this->contentType}"
+            ]
+        );
+    }
 
-        $result = $request->run($payload);
+    public function patch(string $url, $payload = null, array $headers = [])
+    {
+        return $this->request(
+            $url,
+            Methods::PATCH,
+            $payload,
+            [
+                ...$headers,
+                "Content-Type: {$this->contentType}"
+            ]
+        );
+    }
 
-        $response = new Response($result, $request->getStatus());
+    public function delete(string $url, $payload = null, array $headers = [])
+    {
+        return $this->request(
+            $url,
+            Methods::DELETE,
+            $payload,
+            [
+                ...$headers,
+                "Content-Type: {$this->contentType}"
+            ]
+        );
+    }
 
-        return $response;
+    public function options(string $url, $payload = null, array $headers = [])
+    {
+        return $this->request(
+            $url,
+            Methods::OPTIONS,
+            $payload,
+            [
+                ...$headers,
+                "Content-Type: {$this->contentType}"
+            ]
+        );
     }
 }

@@ -40,15 +40,17 @@ class Request
             CURLOPT_RETURNTRANSFER => true 
         ];
 
-        switch ($this->method) {
-            case Methods::POST:
-                $options[CURLOPT_POSTFIELDS] = $payload;
-                $options[CURLOPT_POST] = true;
-                $options[CURLOPT_HTTPHEADER] = [
-                    ...$options[CURLOPT_HTTPHEADER],
-                    "Content-Length: " . strlen($payload)
-                ];
-                break;
+        if ($this->method === Methods::POST) {
+            $options[CURLOPT_POST] = true;
+        }
+
+        if ($this->method !== Methods::GET && $this->method !== Methods::POST) {
+            $options[CURLOPT_CUSTOMREQUEST] = $this->method;
+            $options[CURLOPT_POSTFIELDS] = $payload;    
+            $options[CURLOPT_HTTPHEADER] = [
+                ...$options[CURLOPT_HTTPHEADER],
+                "Content-Length: " . strlen($payload)
+            ];
         }
 
         curl_setopt_array($this->curl, $options);
