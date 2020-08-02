@@ -27,4 +27,9 @@ class Response
     {
         return $this->status >= 300 ? false : true;
     }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }

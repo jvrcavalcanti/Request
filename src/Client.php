@@ -35,7 +35,7 @@ class Client
             return new Response(
                 $request->run(),
                 $request->getStatus()
-            );    
+            );
         }
 
         if ($this->contentType === ContentType::JSON) {

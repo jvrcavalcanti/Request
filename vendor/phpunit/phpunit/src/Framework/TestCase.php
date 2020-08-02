@@ -61,7 +61,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private const LOCALE_CATEGORIES = [\LC_ALL, \LC_COLLATE, \LC_CTYPE, \LC_MONETARY, \LC_NUMERIC, \LC_TIME];
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupGlobals;
 
@@ -1013,25 +1013,25 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
             if ($this->inIsolation) {
                 foreach ($hookMethods['beforeClass'] as $method) {
-                    $this->$method();
+                    $this->{$method}();
                 }
             }
 
             $this->setDoesNotPerformAssertionsFromAnnotation();
 
             foreach ($hookMethods['before'] as $method) {
-                $this->$method();
+                $this->{$method}();
             }
 
             foreach ($hookMethods['preCondition'] as $method) {
-                $this->$method();
+                $this->{$method}();
             }
 
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
 
             foreach ($hookMethods['postCondition'] as $method) {
-                $this->$method();
+                $this->{$method}();
             }
 
             if (!empty($this->warnings)) {
@@ -1073,12 +1073,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         try {
             if ($hasMetRequirements) {
                 foreach ($hookMethods['after'] as $method) {
-                    $this->$method();
+                    $this->{$method}();
                 }
 
                 if ($this->inIsolation) {
                     foreach ($hookMethods['afterClass'] as $method) {
-                        $this->$method();
+                        $this->{$method}();
                     }
                 }
             }

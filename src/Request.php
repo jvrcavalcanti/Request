@@ -13,9 +13,10 @@ class Request
     private int $status;
 
     public function __construct(
-        string $url, string $method = Methods::GET, array $headers = []
-    )
-    {
+        string $url,
+        string $method = Methods::GET,
+        array $headers = []
+    ) {
         if (!extension_loaded("curl")) {
             throw new \RuntimeException("cUrl extension not loaded");
         }
@@ -24,7 +25,7 @@ class Request
 
         $this->url = $url;
         $this->method = $method;
-        $this->headers = $headers;  
+        $this->headers = $headers;
     }
 
     public function getStatus()
@@ -32,12 +33,12 @@ class Request
         return $this->status;
     }
 
-    public function run (string $payload = "")
+    public function run(string $payload = "")
     {
         $options = [
             CURLOPT_URL => $this->url,
             CURLOPT_HTTPHEADER => $this->headers,
-            CURLOPT_RETURNTRANSFER => true 
+            CURLOPT_RETURNTRANSFER => true
         ];
 
         if ($this->method === Methods::POST) {
@@ -46,7 +47,7 @@ class Request
 
         if ($this->method !== Methods::GET) {
             $options[CURLOPT_CUSTOMREQUEST] = $this->method;
-            $options[CURLOPT_POSTFIELDS] = $payload;    
+            $options[CURLOPT_POSTFIELDS] = $payload;
             $options[CURLOPT_HTTPHEADER] = [
                 ...$options[CURLOPT_HTTPHEADER],
                 "Content-Length: " . strlen($payload)

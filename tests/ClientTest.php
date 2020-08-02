@@ -30,10 +30,11 @@ class ClientTest extends TestCase
     {
         $response = $this->client->post(
             "posts", [
-            "title" => "foo",
-            "body" => "bar",
-            "userId" => 1
-        ]);
+                "title" => "foo",
+                "body" => "bar",
+                "userId" => 1
+            ]
+        );
 
         $this->assertEquals(
             $response->json()->id,
