@@ -24,12 +24,14 @@ class ClientTest extends TestCase
             sizeof($response->json()),
             3
         );
+        $this->assertEquals(200, $response->getStatus());
     }
 
     public function testPost()
     {
         $response = $this->client->post(
-            "posts", [
+            "posts",
+            [
                 "title" => "foo",
                 "body" => "bar",
                 "userId" => 1
@@ -40,5 +42,6 @@ class ClientTest extends TestCase
             $response->json()->id,
             4
         );
+        $this->assertEquals(201, $response->getStatus());
     }
 }

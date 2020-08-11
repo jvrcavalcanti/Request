@@ -32,8 +32,10 @@ class Client
         );
 
         if (!$payload) {
+            $result = $request->run();
+
             return new Response(
-                $request->run(),
+                $result,
                 $request->getStatus()
             );
         }
@@ -42,8 +44,10 @@ class Client
             $payload = json_encode($payload);
         }
 
+        $result = $request->run();
+
         return new Response(
-            $request->run($payload),
+            $result,
             $request->getStatus()
         );
     }
